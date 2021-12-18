@@ -9,15 +9,21 @@
     <%= javascript_include_tag 'application', 
                                'data-turbolinks-track': 'reload' %>
     <%= render 'layouts/shim' %>
-    <!--[if lt IE9]>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js">
-      </script>
-    <![endif]-->
   </head>
 
   <body>
     <%= render 'layouts/shim' %>
-
+    <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+      <%= link_to "Attendance App b", root_path, id: "logo" %>
+      <nav>
+        <ul class="nav navbar-nav nabar-right">
+          <li><%= link_to "Top", root_path %></li>
+          <li><%= link_to "Log in", '#' %></li>
+        </ul>
+      </nav>
+      </div>
+    </header>
     <div class="container">
       <%= yield %>
     </div>
