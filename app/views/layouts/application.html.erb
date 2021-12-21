@@ -12,20 +12,10 @@
   </head>
 
   <body>
-    <%= render 'layouts/shim' %>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-      <%= link_to "Attendance App b", root_path, id: "logo" %>
-      <nav>
-        <ul class="nav navbar-nav nabar-right">
-          <li><%= link_to "Top", root_path %></li>
-          <li><%= link_to "Log in", '#' %></li>
-        </ul>
-      </nav>
-      </div>
-    </header>
+    <%= render 'layouts/header' %>
     <div class="container">
       <%= yield %>
+      <%= debug(params) if Rails.env.development? %>
     </div>
   </body>
 </html>
