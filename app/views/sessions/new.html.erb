@@ -6,7 +6,7 @@
     <%= form_with(scope: :session, url: login_path, local: true) do |f| %>
     
        <%= f.label :email, class: "label-login" %>
-       <%= f.email_field :emal, class: 'form-control' %>
+       <%= f.email_field :email, class: 'form-control' %>
        
        <%= f.label :password, class: "label-login" %>
        <%= f.password_field :password, class: 'form-control' %>
