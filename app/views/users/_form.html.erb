@@ -10,7 +10,7 @@
   <%= f.label :password, class: "label-#{yield(:class_text)}" %>
   <%= f.password_field :password,class: "form-contarol" %>
   
-  <%= f.label :password_confirmatin, "Confirmation", class: "label-#{yield(:class_text)}" %>
+  <%= f.label :password_confirmatin, class: "label-#{yield(:class_text)}" %>
   <%=f.password_field :password_confirmatin, class: "form-contarol" %>
   
   <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>

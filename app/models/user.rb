@@ -23,7 +23,7 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
   
-  # 渡された文字列のハッシュ値を返します。
+  # ランダムなトークンを返します。
   def User.new_token
     SecureRandom.urlsafe_base64
   end
