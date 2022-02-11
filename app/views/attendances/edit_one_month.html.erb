@@ -18,8 +18,16 @@
         <%= f.fields_for "attendances[]", day do |attendance| %>
           <tr>
             <td><%= l(day.worked_on, format: :short) %></td>
-            <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-            <% if !current_user.admin? && (Date.current < day.worked_on) %>
+            <td>
+              <% if day.worked_on.wday == 6 %>
+                <font color="Blue"><%= $days_of_the_week[day.worked_on.wday] %></div>
+              <% elsif day.worked_on.wday == 0 %>
+                <font color="Red"><%= $days_of_the_week[day.worked_on.wday] %></div>
+              <% else %>
+                <%= $days_of_the_week[day.worked_on.wday] %>
+              <% end %>
+              </td>
+            <% if (Date.current < day.worked_on) %>
               <td><%= attendance.time_field :started_at, readonly: true, class: "form-control" %></td>
               <td><%= attendance.time_field :finished_at, readonly: true, class: "form-control" %></td>
             <% else %>

@@ -16,7 +16,7 @@
       <td>所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
       <td>名前：<%= @user.name %></td>
       <td>コード</td>
-      <td><%= sprintf("%04d",@user.id) %></td>
+      <td>0921</td>
       <td>出勤日数：<%= @worked_sum %>日</td>
       <td>月締め：<%= l(@last_day, format: :short) %></td>
     </tr>
@@ -59,14 +59,15 @@
               <%= $days_of_the_week[day.worked_on.wday] %>
             <% end %>
           </td>
-          <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
+          <td><%= format_hour(day.started_at) if day.started_at.present? %></td>
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
           <td>
+            <!-- <% if btn_text = attendance_state(day) %> -->
             <% if (Date.current == day.worked_on) && day.started_at.nil? %>
               <%= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <% end %>
           </td>
-          <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
+          <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>
           <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
           <td>
             <% if (Date.current == day.worked_on) && day.finished_at.nil? %>

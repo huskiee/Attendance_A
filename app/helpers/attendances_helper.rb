@@ -14,4 +14,29 @@ module AttendancesHelper
   def working_times(start, finish)
      format("%.2f", (((finish - start) / 60) / 60.0))
   end
+  
+  def format_hour(time)
+    format('%.d',((time.hour)))
+  end
+  
+  def format_min(time)
+    format("%.2d",((time.strftime('%M').to_i / 15).round) * 15)
+  end
+  
+     # 不正な値があるか確認する
+  def attendances_invalid?
+    attendances = true
+    attendances_params.each do |id, item|
+      if item[:started_at].blank? && item[:finished_at].blank?
+        next
+      elsif item[:started_at].blank? || item[:finished_at].blank?
+        attendances = false
+        break
+      elsif item[:started_at] > item[:finished_at]
+        attendances = false
+        break
+      end
+    end
+    return attendances
+  end
 end
