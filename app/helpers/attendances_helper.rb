@@ -40,3 +40,4 @@ module AttendancesHelper
     return attendances
   end
 end
+  

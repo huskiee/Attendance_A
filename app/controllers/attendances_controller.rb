@@ -40,7 +40,7 @@ class AttendancesController < ApplicationController
         flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
         redirect_to user_url(date: params[:date])
       else
-        flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+        flash[:danger] = "出勤又は退勤の一方のみの入力データがあった為、更新をキャンセルしました。"
         redirect_to attendances_edit_one_month_user_url(date: params[:date])
       end
     end
