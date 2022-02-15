@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    redirect_to(root_url) unless current_user?(@user) || current_user.admin?
     @worked_sum = @attendances.where.not(started_at: nil).count
   end
 
