@@ -24,13 +24,18 @@
           <% else %>
             <%= user.name %>
           <% end %>
-        <br>
+        </td>
+        <td class="center"><%= user.department.present? ? user.department : "未所属" %></td>
+        <% if current_user.admin? %>
+          <td class="center"><%= format_basic_info(user.basic_time) %></td>
+          <td class="center"><%= format_basic_info(user.work_time) %></td>
+        <% end %>
+        <td class="center">
           <% if current_user.admin? && !current_user?(user) %>
+            <%= link_to "基本情報の編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
             <%= link_to "削除", user, method: :delete,
                 data: { confirm: "削除してよろしいですか？" },
                 class: "btn btn-danger" %>
-        <br>
-            <%= link_to "基本情報の編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>            
           <% end %>
         </td>
       </tr>

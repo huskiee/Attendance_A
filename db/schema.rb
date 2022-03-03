@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(version: 20220129123850) do
     t.string "department"
     t.datetime "basic_time", default: "2022-03-01 23:00:00"
     t.datetime "work_time", default: "2022-03-01 22:45:00"
-    t.datetime "basic_start_time", default: "2022-03-01 23:00:00"
-    t.datetime "basic_finish_time", default: "2022-03-02 07:45:00"
+    t.datetime "designated_work_start_time", default: "2022-03-01 23:00:00"
+    t.datetime "designated_work_end_time", default: "2022-03-02 07:45:00"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
