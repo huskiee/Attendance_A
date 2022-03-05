@@ -7,12 +7,6 @@
     <thead>
       <tr>
         <th><%= User.human_attribute_name :name %></th>
-        <th class="center"><%= User.human_attribute_name :department %></th>
-        <% if current_user.admin? %>
-          <th class="center"><%= User.human_attribute_name :basic_time %></th>
-          <th class="center"><%= User.human_attribute_name :work_time %></th>
-        <% end %>
-        <th></th>
       </tr>
     </thead>
 
@@ -28,10 +22,22 @@
           <% if current_user.admin? && !current_user?(user) %>
             <%= link_to "削除", user, method: :delete,
                 data: { confirm: "削除してよろしいですか？" },
-                class: "btn btn-danger" %>
-        <br>
-            <%= link_to "基本情報の編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>            
+                class: "btn btn-primary" %>
+
+        <div class="panel-group">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <button type="button" data-toggle="collapse" data-target=@user.name class="btn btn-primary btn-lg" aria-expanded="true">編集</button>
+              </h4>
+            </div>
+            <div id=@user.name ="" class="panel-collapse collapse in" aria-expanded="true" style="">
+              <div class="panel-body">
           <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
         </td>
       </tr>
     <% end %>
