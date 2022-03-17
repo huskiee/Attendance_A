@@ -7,7 +7,7 @@
          <% if logged_in? %>
             <% if current_user.admin? %> <%# 勤怠：admin_userのみ表示 %>
             <li><%= link_to "ユーザー一覧", users_path %></li>
-            <li><%= link_to "出勤社印一覧", "#" %></li>
+            <li><%= link_to "出勤社員一覧", "#" %></li>
             <li><%= link_to "拠点情報の編集", "#" %></li>
             <li><%= link_to "基本情報の編集", edit_basic_info_user_path(@current_user) %></li>
             <% end %>
@@ -17,8 +17,10 @@
               アカウント【<%= User.find(session[:user_id]).name %>】 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
+              <% unless current_user.admin? %> <%# 勤怠：admin_userのみ表示 %>
               <li><%= link_to "勤怠管理表", current_user %></li>
-              <li><%= link_to "アカウント情報", edit_user_path(@current_user) %>
+              <% end %>
+              <li><%= link_to "アカウント情報", edit_user_path(current_user) %>
               <li class="divider"></li>
               <li>
                 <%= link_to "ログアウト", logout_path, method: :delete %>

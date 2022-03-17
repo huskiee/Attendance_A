@@ -7,14 +7,14 @@
         【<%= l(@first_day, format: :middle) %>：勤務時間管理表】
         <%= link_to "▶", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
-      <td>指定勤務開始時間：<%= format_basic_info(@user.basic_time) %>
+      <td>指定勤務開始時間：<%= format_basic_info(@user.designated_work_start_time) %>
         <br>
-          指定勤務終了時間：<%= format_basic_info(@user.work_time) %>
+          指定勤務終了時間：<%= format_basic_info(@user.designated_work_end_time) %>
         <br>
       </td>
-      <td colspan="3">指定勤務時間：<%= format_basic_info(@user.work_time) %>
+      <td colspan="3">指定勤務時間：<%= format_basic_info(@user.designated_work_time) %>
         <br>
-         基本勤務時間：<%= format_basic_info(@user.basic_time) %>
+         基本勤務時間：<%= format_basic_info(@user.basic_work_time) %>
         <br>
       </td>
       <td>月初日：<%= l(@first_day, format: :short) %></td>
@@ -32,16 +32,17 @@
 </div>
 <div class="btn-users-show">
   【所属長承認申請のお知らせ】
-  <br>
+  </br>
     【勤怠変更申請のお知らせ】
-  <br>
+  </br>
     【残業申請のお知らせ】
   <br>
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
   <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-  <br>
+  <div class="left">
+  </br>
   <%= link_to "勤怠修正ログ（承認済）", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-  <br>
+  </div>
 </div>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
@@ -138,7 +139,7 @@
       </tr>
       <tr>
         <td colspan="2"><%= @attendances.count %></td>
-        <td colspan="6"><%= format_basic_info(@user.work_time).to_f * @worked_sum %></td>
+        <td colspan="6"><%= format_basic_info(@user.designated_work_time).to_f * @worked_sum %></td>
         <td colspan="2"><%= format("%.2f", @total_working_times.to_f) %></td>
       </tr>
     </tfoot>
