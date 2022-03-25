@@ -6,7 +6,7 @@
 <div class="col-md-10 col-md-offset-1">
   <%= form_tag import_users_path, method: :post, multipart: true do %>
     <%= file_field_tag :file %>
-    <h4 class="container-lg">
+    <h4 class="container-lg col-md-10">
     <%= submit_tag "　　　　ＣＳＶをインポート　　　　", class: "btn btn-primary" %>
     </h4>
   <% end %>  

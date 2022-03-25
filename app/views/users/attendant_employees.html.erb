@@ -1,0 +1,35 @@
+<% provide(:title, 'Attendant Employees:出勤中社員一覧') %>
+<% provide(:class_text, 'user--edit') %>
+<% provide(:button_text, '編集するー') %>
+<h1>出勤中社員一覧</h1>
+
+<div class="col-md-10 col-md-offset-1">
+
+  <table class="table table-condensed table-hover" id="table-attendant_employees">
+    <thead>
+        <tr>
+          <th class="center col-md-2"><%= User.human_attribute_name :employee_number %></th>
+          <th class="center col-md-4"><%= User.human_attribute_name :department %></th>
+          <th class="center col-md-6"><%= User.human_attribute_name :name %></th>        
+          <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <% user.attendances.each do |attendance| %>
+          <tr>
+          <% if (Date.current == attendance.worked_on) && attendance.started_at != nil && attendance.finished_at == nil %>
+            <td class="center col-md-2"><%= user.employee_number %></td>
+            <td class="center col-md-4"><%= user.department.present? ? user.department : "未所属" %></td>
+            <td class="center col-md-6"><%= user.name %></td>
+          <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>
+
+<!--モーダルウィンドウ表示-->
+<div id="edit-basic-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

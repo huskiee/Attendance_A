@@ -16,6 +16,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def attendant_employees
+    @users = User.all.includes(:attendances)
+  end
+
   def import
     if params[:file].blank?
       flash[:warning] = "CSVファイルが選択されていません。"
@@ -83,12 +87,12 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :department, :password, :password_confirmation,
-      :employee_number, :uid, :basic_time, :work_time, :designated_work_start_time, :designated_work_end_time)
+      :employee_number, :uid, :basic_work_time, :designated_work_time, :designated_work_start_time, :designated_work_end_time)
     end
 
     def basic_info_params
       params.require(:user).permit(:name, :email, :department, :password, :password_confirmation,
-      :employee_number, :uid, :basic_time, :work_time, :designated_work_start_time, :designated_work_end_time)
+      :employee_number, :uid, :basic_work_time, :designated_work_time, :designated_work_start_time, :designated_work_end_time)
     end    
     
     def admin_or_correct_user
