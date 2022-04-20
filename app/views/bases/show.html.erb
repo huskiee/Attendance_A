@@ -1,0 +1,33 @@
+<% provide(:title, @base.base_name %>
+
+<div>
+  <table class="table table-bordered table-condensed table-hover" id="table-base">
+    <thead>
+      <tr><!--rowspan:縦結合、colspan：横結合-->
+        <td rowspan="3">修正</td>
+        <td rowspan="3">削除</td>
+        <td rowspan="3">拠点番号</td>
+        <td rowspan="3">拠点名</td>
+        <td colspan="8">勤怠種類</td>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <% @bases.each do |base| %>
+        <tr>
+          <td><%= link_to "修正", edit_basis_path, method: :edit, data: { confirm: "拠点情報を修正します。" }, class: "btn btn-primary" %></td>
+          <td><%= link_to "削除", user, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %></td>
+          <td><%= @base.base_number %></td>
+          <td><%= @base.base_name %></td>
+          <td><%= @base.base_type %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    
+    <tfoot>
+      <tr>
+        <td><%= link_to "拠点情報追加", bases_path, method: :create, data: { confirm: "拠点情報を追加します。" }, class: "btn btn-primary" %></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

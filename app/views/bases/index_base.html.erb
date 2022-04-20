@@ -1,0 +1,52 @@
+<% provide(:title, 'All base:拠点情報一覧') %>
+<% provide(:class_text, 'base--edit') %>
+<% provide(:button_text, '追加するー') %>
+<h1>拠点情報一覧</h1>
+
+<div class="col-md-10 col-md-offset-1">
+  <table class="table table-bordered table-striped table-condensed table-hover" id="table-bases">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th><%= "拠点番号" %></th>
+        <th><%= "拠点名" %></th>
+        <th><%= "勤怠種類" %></th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <% @bases.each do |base| %>
+      <tr>
+        <td>
+          <%= link_to "編集", edit_base_info_basis_path(base), remote: true, class: "btn btn-primary" %>
+        </td>
+        <td>
+          <%= link_to "削除", base, method: :delete, data: { confm: "削除してよろしいですか？" }, class: "btn btn-primary" %>
+        </td>
+        <td><%= base.base_number %></td>
+        <td><%= base.base_name %></td>
+        <td><%= base.base_type %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <tr>
+    <td>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" data-toggle="collapse" data-target="#add_base" class="btn btn-lg btn-primary">拠点情報追加</button>
+        </div>
+        <div id="add_base" class="collapse">
+          <div class="panel-body">
+            <%= render 'form_new_base' %>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+</div>
+
+<!--モーダルウィンドウ表示-->
+<div id="edit_base_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

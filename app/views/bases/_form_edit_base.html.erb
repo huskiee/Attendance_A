@@ -1,0 +1,22 @@
+<%= form_with(model: @base, local: true) do |f| %>
+  <%= render 'shared/error_base_messages', object: @base %>
+  
+  <%= f.label :id, class: "label-#{yield(:class_text)}" %>
+  <p><%= sprintf("%04d",@base.id) if current_user %></p>
+  
+  <%= f.label :base_number, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :base_number, class: "form-control" %>
+  
+  <%= f.label :base_name, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :base_name, class: "form-control" %>
+  
+  <%= f.label :base_type, class: "label-#{yield(:class_text)}" %>
+  <p><%= f.select :base_type, ["選択してください", "出勤", "退勤"] %></p>
+
+  <div class="center">
+    <%= f.submit yield(:button_text), class: "btn btn-primary btn-#{yield(:class_text)}" %>
+    <button type="button" class="btn btn-default btn-<%= yield(:class_text) %>" data-dismiss="modal"  aria-label="Close">
+    キャンセル
+    </button>
+  </div>
+<% end %>

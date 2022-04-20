@@ -1,11 +1,11 @@
 <% provide(:class_text, 'basic-info1') %>
 
 
-  <%= form_with(model: @user, url: update_basic_info1_user_path(@user), local: true, method: :patch) do |f| %>
+  <%= form_with(model: @user, local: true) do |f| %>
     <%= render 'shared/error_messages', object: @user %>
                     
     <%= f.label :id, class: "label-#{yield(:class_text)}" %>
-    <p><%= @user.id if current_user %></p>
+    <p><%= sprintf("%04d",user.id) if current_user %></p>
         
     <%= f.label :name, class: "label-#{yield(:class_text)}" %>
     <%= f.text_field :name, class: "form-control" %>
