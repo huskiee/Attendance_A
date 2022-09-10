@@ -80,14 +80,14 @@
       <% @attendances.each do |day| %>
         <tr>
           <td>
-            <%= link_to "残業申請", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
+            <%= link_to "残業申請", user_attendance_edit_overwork_request_path(@user,day), remote: true, class: "btn btn-primary" %>
           </td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td>
             <% if day.worked_on.wday == 6 %>
-              <font color="Blue"><%= $days_of_the_week[day.worked_on.wday] %></div>
+              <font color="Blue"><%= $days_of_the_week[day.worked_on.wday] %></font>
             <% elsif day.worked_on.wday == 0 %>
-              <font color="Red"><%= $days_of_the_week[day.worked_on.wday] %></div>
+              <font color="Red"><%= $days_of_the_week[day.worked_on.wday] %></font>
             <% else %>
               <%= $days_of_the_week[day.worked_on.wday] %>
             <% end %>
@@ -145,3 +145,6 @@
     </tfoot>
   </table>
 </div>
+
+<!--モーダルウィンドウ表示-->
+<div id="edit_overwork_request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

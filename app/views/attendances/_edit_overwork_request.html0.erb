@@ -1,0 +1,59 @@
+<% provide(:title, "【Edit:残業申請】") %>
+<% provide(:class_text, 'base--edit') %>
+<% provide(:button_text, '変更を申請する') %>
+
+
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h1 class="modal-title">modal_edit_overwork_request_残業申請</h1>
+    </div>
+    
+    <div class="modal-body">
+      <%= form_with(model: @user, url:attendances_update_overwork_request_user_path(params:{ day: @attendance }), local: true, method: :patch) do |f| %>
+        <table class="table table-bordered table-striped table-condensed table-hover" id="table-attendances">
+          <thead>
+            <tr>
+              <th><%= "日付" %></th>
+              <th><%= "曜日" %></th>
+              <th><%= "終了予定時間" %></th>
+              <th><%= "翌日" %></th>
+              <th><%= "業務処理内容" %></th>
+              <th><%= "指示者確認㊞" %></th>
+            </tr>
+          </thead>
+                        
+          <tbody>
+            <% @attendances.each do |day| %>
+              <%= f.fields_for "attendances[]", day do |attendance| %>
+                <tr>
+                  <td><%= l(day, format: :short) %></td>
+                  <td>
+                    <% if day.wday == 6 %>
+                      <font color="Blue"><%= $days_of_the_week[day.wday] %></div>
+                    <% elsif day.wday == 0 %>
+                      <font color="Red"><%= $days_of_the_week[day.wday] %></div>
+                    <% else %>
+                      <%= $days_of_the_week[day.wday] %>
+                    <% end %>
+                  </td>
+                  <td><%= attendance.time_field :over_ending_time_at, readonly: true, class: "form-control" %></td>
+                  <td><%= attendance.check_box :next_day, id: "next_day" %></td>
+                  <td><%= attendance.text_field :work_description, class: "form-control" %></td>
+                  <td><%= attendance.select :apply_to_superior, [["0", "なし"], ["1", "申請中"], ["2", "承認"], ["3", "否認"]], class: "form-control" %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table> 
+      <% end %>
+        <div class="center">
+          <%= f.submit yield(:button_text), class: "btn btn-primary btn-#{yield(:class_text)}" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

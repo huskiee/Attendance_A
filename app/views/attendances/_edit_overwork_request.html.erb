@@ -1,6 +1,6 @@
-<% provide(:title, "Edit:拠点情報の更新") %>
+<% provide(:title, "【Edit:残業申請】") %>
 <% provide(:class_text, 'base--edit') %>
-<% provide(:button_text, '　更新だよ　') %>
+<% provide(:button_text, '変更を申請する') %>
 
 <div class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
@@ -8,13 +8,11 @@
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">×</span>
       </button>
-      <h1 class="modal-title">modal_edit_base_info_拠点情報の編集</h1>
+      <h1 class="modal-title">modal_edit_overwork_request_残業申請</h1>
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <%= render 'form_edit_base' %>
-        </div>
+        <%= render 'form_overwork_request' %>
       </div>
     </div>
   </div>
