@@ -1,3 +1,31 @@
 // Place all the styles related to the Attendances controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#modal-content{
+	width:50%;
+	margin:1.5em auto 0;
+	padding:10px 20px;
+	border:2px solid #aaa;
+	background:#fff;
+	z-index:2;
+}
+
+.modal-p{
+	margin-top:1em;
+}
+
+.modal-p:first-child{
+	margin-top:0;
+}
+
+/* 基本情報編集モーダルウインドウ */
+
+.label-edit {
+  margin-top: 5px;
+}
+
+.btn-edit {
+  margin: 15px 0;
+  width: 30%;
+}
