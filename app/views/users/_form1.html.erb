@@ -1,8 +1,7 @@
 <%= form_with(model: @user, url: update_basic_info_user_path(@user), local: true, method: :patch) do |f| %>
   <%= render 'shared/error_messages', object: @user %>
             
-  <%= f.label :id, class: "label-#{yield(:class_text)}" %>
-  <p><%= sprintf("%04d",@user.id) %></p>
+
 
   <%= f.label :name, class: "label-#{yield(:class_text)}" %>
   <p><%= @user.name %></p>
@@ -10,6 +9,9 @@
   <%= f.label :department, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :department, class: "form-control" %>
 
+  <%= f.label :superior_rank, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :superior_rank, class: "form-control" %>
+  </br>
   <%= f.label :basic_work_time, class: "label-#{yield(:class_text)}" %>
   <%= f.time_field :basic_work_time, class: "form-control" %>
 

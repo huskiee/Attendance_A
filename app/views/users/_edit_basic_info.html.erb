@@ -19,6 +19,9 @@
     <%= f.label :department, class: "label-#{yield(:class_text)}" %>
     <%= f.text_field :department, class: "form-control" %>
                     
+    <%= f.label :superior_rank, class: "label-#{yield(:class_text)}" %></br>
+    <%= f.select :superior_rank, [["選択してください", 0],["係員", 1],["係長", 2],["班長", 3],["課長", 4],["次長", 5],["部長", 6]] %>
+    </br>
     <%= f.label :employee_number, class: "label-#{yield(:class_text)}" %>
     <%= f.text_field :employee_number, class: "form-control" %>
         

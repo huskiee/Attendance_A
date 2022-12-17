@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     end
     resources :attendances do
       get 'edit_overwork_request'
+      get 'edit_overwork_info'
       patch 'update_overwork_request'
     end
   end

@@ -78,7 +78,7 @@ class AttendancesController < ApplicationController
     end
     # 1日分の残業申請
     def overwork_request_params
-      params.require(:attendance).permit(:over_ending_time_at, :next_day, :work_description)
+      params.require(:attendance).permit(:over_ending_time_at, :next_day, :work_description, :apply_to_superior)
     end
     # beforeフィルター
 

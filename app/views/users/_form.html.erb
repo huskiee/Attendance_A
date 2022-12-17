@@ -1,8 +1,7 @@
 <%= form_with(model: @user, local: true) do |f| %>
   <%= render 'shared/error_messages', object: @user %>
   
-  <%= f.label :id, class: "label-#{yield(:class_text)}" %>
-  <p><%= sprintf("%04d",@user.id) if current_user %></p>
+
   
   <%= f.label :name, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :name, class: "form-control" %>
@@ -13,6 +12,9 @@
   <%= f.label :department, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :department, class: "form-control" %>
   
+  <%= f.label :superior_rank, class: "label-#{yield(:class_text)}" %></br>
+  <%= f.select :superior_rank, [["選択してください", 0],["係員", 1],["係長", 2],["班長", 3],["課長", 4],["次長", 5],["部長", 6]] %>
+  </br>
   <%= f.label :password, class: "label-#{yield(:class_text)}" %>
   <%= f.password_field :password, class: "form-control" %>
   

@@ -11,8 +11,29 @@ module AttendancesHelper
   end
   
   # 出勤時間と退勤時間を受け取り、在社時間を計算して返します。
-  def working_times(start, finish)
-     format("%.2f", (((finish - start) / 60) / 60.0))
+  def working_times(start_at, finish_at)
+     format("%.2f", (((finish_at - start_at) / 60) / 60.0))
+  end
+  # 終了時間と指定勤務終了時間を受け取り、在社時間を計算して返します。
+  #def edit_working_times(edit_day_started_at, edit_day_finished_at, next_day)
+    #if next_day == "1"
+      #format("%.2f", (((edit_day_finished_at - edit_day_started_at) / 60) / 60.0) +24)
+    #elsif next_day == "0"
+      #format("%.2f", ((edit_day_finished_at - edit_day_started_at) / 60) / 60.0)
+    #end
+  #end
+  
+  # 終了時間と指定勤務終了時間を受け取り、残業時間を計算して返します。
+  def working_overtimes(over_ending_time_at, designated_work_end_time, next_day)
+    if  next_day
+      format("%.2f", (over_ending_time_at.hour - designated_work_end_time.hour) + ((over_ending_time_at.min - designated_work_end_time.min) / 60.0) + 24)
+    else
+      format("%.2f", (over_ending_time_at.hour - designated_work_end_time.hour) + ((over_ending_time_at.min - designated_work_end_time.min) / 60.0))
+    end
+  end  
+  
+  def superiors(over_request_superior)
+    User.find(over_request_superior)
   end
   
   def format_hour(time)

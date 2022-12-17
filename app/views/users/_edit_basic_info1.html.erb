@@ -1,12 +1,9 @@
 <% provide(:class_text, 'basic-info1') %>
 
 
-  <%= form_with(model: @user, local: true) do |f| %>
-    <%= render 'shared/error_messages', object: @user %>
-                    
-    <%= f.label :id, class: "label-#{yield(:class_text)}" %>
-    <p><%= sprintf("%04d",user.id) if current_user %></p>
-        
+  <%= form_with(model: user, url: update_basic_info_user_path(user), local: true, method: :patch) do |f| %>
+  　<%= render 'shared/error_messages', object: user %>
+            
     <%= f.label :name, class: "label-#{yield(:class_text)}" %>
     <%= f.text_field :name, class: "form-control" %>
                     
@@ -28,15 +25,15 @@
     <%= f.label :password_confirmation, class: "label-#{yield(:class_text)}" %>
     <%=f.password_field :password_confirmation, class: "form-control" %>
                     
-    <%= f.label :basic_time, class: "label-#{yield(:class_text)}" %>
-    <%= f.time_field :basic_time, class: "form-control" %>
+    <%= f.label :basic_work_time, class: "label-#{yield(:class_text)}" %>
+    <%= f.time_field :basic_work_time, class: "form-control" %>
         
     <%= f.label :designated_work_start_time, class: "label-#{yield(:class_text)}" %>
     <%= f.time_field :designated_work_start_time, class: "form-control" %>
         
     <%= f.label :designated_work_end_time, class: "label-#{yield(:class_text)}" %>
     <%= f.time_field :designated_work_end_time, class: "form-control" %>
-    <h4>
+
     <%= f.submit "編集するー", class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>  
-    </h4> 
+
   <% end %>

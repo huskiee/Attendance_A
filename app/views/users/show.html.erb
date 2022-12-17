@@ -2,40 +2,42 @@
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
-      <td>
+      <td colspan="2">
         <%= link_to "◀", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
         【<%= l(@first_day, format: :middle) %>：勤務時間管理表】
         <%= link_to "▶", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
-      <td>指定勤務開始時間：<%= format_basic_info(@user.designated_work_start_time) %>
-        <br>
-          指定勤務終了時間：<%= format_basic_info(@user.designated_work_end_time) %>
-        <br>
+      <td>指定勤務開始時刻：<%= format_basic_info(@user.designated_work_start_time) %>
+        </br>
+          指定勤務終了時刻：<%= format_basic_info(@user.designated_work_end_time) %>
       </td>
       <td colspan="3">指定勤務時間：<%= format_basic_info(@user.designated_work_time) %>
-        <br>
+        </br>
          基本勤務時間：<%= format_basic_info(@user.basic_work_time) %>
-        <br>
       </td>
-      <td>月初日：<%= l(@first_day, format: :short) %></td>
+      <td></br>月初日：<%= l(@first_day, format: :short) %></td>
     </tr>
 
     <tr>
       <td>所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
       <td>名前：<%= @user.name %></td>
       <td>コード</td>
-      <td><%= sprintf("%04d",@user.id) %></td>
+      <td><%= sprintf("%04d",@user.id) if current_user %></td>
       <td>出勤日数：<%= @worked_sum %>日</td>
       <td>月締め：<%= l(@last_day, format: :short) %></td>
     </tr>
   </table>
 </div>
 <div class="btn-users-show">
-  【所属長承認申請のお知らせ】
+  <a>【所属長承認申請のお知らせ】</a>
   </br>
-    【勤怠変更申請のお知らせ】
+    <a>【勤怠変更申請のお知らせ】</a>
   </br>
-    【残業申請のお知らせ】
+    <% if @overwork_reqest.present? %>
+      <%= link_to "【残業申請のお知らせ】", user_attendance_edit_overwork_info_path(@user, @attendances), remote: true, class: "text text-danger" %><%= @overwork_reqest.count %>件
+    <% else %>
+      <a>【残業申請のお知らせ】</a>
+    <% end %>
   <br>
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
   <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
@@ -93,7 +95,7 @@
             <% end %>
           </td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
-          <td><%= format_min(day.started_at) if day.started_at.present? %></td>
+          <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
           <td>
             <% if (Date.current == day.worked_on) && day.started_at.nil? %>
               <%= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
@@ -113,11 +115,16 @@
             <% end %>
           </td>
           <td><%= day.note %></td>
-          <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
-          <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td><%= l(day.over_ending_time_at, format: :hour) if day.over_ending_time_at.present? %></td>
+          <td><%= format_min(day.over_ending_time_at) if day.over_ending_time_at.present? %></td>
+          <td>
+            <% if day.over_ending_time_at.present? %>
+              <%= working_overtimes(day.over_ending_time_at, @user.designated_work_end_time, day.next_day) %>
+              
+            <% end %>
+          </td>
+          <td><%= day.work_description %></td>
+          <td><%= User.find(day.apply_to_superior).name if day.apply_to_superior.present? %></td>
         </tr>
       <% end %>
     </tbody>
