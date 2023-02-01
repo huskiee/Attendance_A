@@ -32,8 +32,8 @@ module AttendancesHelper
     end
   end  
   
-  def superiors(over_request_superior)
-    User.find(over_request_superior)
+  def superiors(overwork_request_superior)
+    User.find(overwork_request_superior)
   end
   
   def format_hour(time)
