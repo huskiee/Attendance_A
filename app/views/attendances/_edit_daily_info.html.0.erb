@@ -1,0 +1,16 @@
+<% provide(:title, "【Edit:勤怠変更申請のお知らせ】") %>
+<% provide(:class_text, 'base--edit') %>
+<% provide(:button_text, '勤怠変更を送信する') %>
+
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <%= render 'form_daily_info' %>
+    </div>
+  </div>
+</div>

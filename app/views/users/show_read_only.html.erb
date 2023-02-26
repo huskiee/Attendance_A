@@ -1,9 +1,11 @@
-<% provide(:title, @user.id) %>
+<% provide(:title, @user.name) %>
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td colspan="2">
+        <%#= link_to "◀", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
         【<%= l(@first_day, format: :middle) %>：勤務時間管理表】
+        <%#= link_to "▶", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
       <td>指定勤務開始時刻：<%= l(@user.designated_work_start_time, format: :time) %>
         </br>
@@ -28,6 +30,48 @@
   </table>
 </div>
 <div class="btn-users-show">
+  <%# if current_user.superior? %>
+    <%# if @monthly_request.present? %>
+      <div class="rowspan">
+        <font color="red"><%#= link_to "【所属長承認申請のお知らせ】", edit_monthly_info_user_attendances_path(@user, @attendances), remote: true, class: "text text-danger" %>
+          <strong style="display:inline-block; padding:1px; border:thick solid red;"><%#= "#{@@monthly_request.count}件の通知があります。" %>
+          </strong>
+        </font>
+      </div>
+    <%# else %>
+      <!-- <a>【所属長承認申請のお知らせ】</a> -->
+    <%# end %>
+    <br>
+    <%# if @daily_request.present? %>
+      <div class="rowspan">
+        <font color="red"><%#= link_to "【勤怠変更のお知らせ】", edit_daily_info_user_attendances_path(@user), remote: true, class: "text text-danger" %>
+          <strong style="display:inline-block; padding:1px; border:thick solid red;"><%#= "#{@daily_request.count}件の通知があります。" %>
+          </strong>
+        </font>
+      </div>
+    <%# else %>
+      <!-- <a>【勤怠変更申請のお知らせ】</a> -->
+    <%# end %>
+    <br>
+    <%# if @overwork_request.present? %>
+      <!-- < %= link_to "【残業申請のお知らせ】", user_attendance_edit_overwork_info_path(@user, @attendances), remote: true, class: "text text-danger" %> -->
+      <div class="rowspan">
+        <font color="red"><%#= link_to "【残業申請のお知らせ】", edit_overwork_info_user_attendances_path(@user), remote: true, class: "text text-danger" %>
+          <strong style="display:inline-block; padding:1px; border:thick solid red;"><%#= "#{@overwork_request.count}件の通知があります。" %>
+          </strong>
+        </font>
+      </div>
+    <%# else %>
+      <!-- <a>【残業申請のお知らせ】</a> -->
+    <%# end %>
+  <%# end %>
+  <br>
+  <%#= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  <%#= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  <div class="left">
+  </br>
+  <%#= link_to "勤怠修正ログ（承認済）", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  </div>
 </div>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
@@ -64,7 +108,9 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td></td>
+          <td>
+            <%#= link_to "残業申請", user_attendance_edit_overwork_request_path(@user,day), remote: true, class: "btn btn-primary" %>
+          </td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td>
             <% if day.worked_on.wday == 6 %>
@@ -75,29 +121,79 @@
               <%= $days_of_the_week[day.worked_on.wday] %>
             <% end %>
           </td>
-          <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
-          <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
-          <td></td>
-          <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
-          <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
-          <td></td>         
+            <% if day.edit_lastday_started_at.nil? && day.daily_request_status == "承認" %>
+              <td><%= l(day.edit_day_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
+              <td><%= l(day.edit_day_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
+            <% elsif day.edit_day_started_at.nil? && day.daily_request_status == "承認" %>  
+              <td><%= l(day.edit_day_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
+              <td><%= l(day.edit_day_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
+            <% else %>
+              <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
+              <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
+            <% end %>
           <td>
-            <% if day.started_at.present? && day.finished_at.present? %>
-              <%= str_times = working_times(day.started_at, day.finished_at) %>
-              <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
+            <% if (Date.current == day.worked_on) && day.started_at.nil? %>
+              <%= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% end %>
+          </td>
+            <% if day.edit_lastday_finished_at.nil? && day.daily_request_status == "承認" %>
+              <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
+              <td><%= l(day.edit_day_finished_at, format: :minute) if day.edit_day_finished_at.present? %></td>
+            <% elsif day.edit_day_finished_at.nil? && day.daily_request_status == "承認" %>  
+              <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
+              <td><%= l(day.edit_day_finished_at, format: :minute) if day.edit_day_finished_at.present? %></td>
+            <% else %>
+              <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
+              <td><%= l(day.finished_at, format: :minute) if day.finished_at.present? %></td>
+            <% end %>
+          <td>
+            <% if (Date.current == day.worked_on) && day.finished_at.nil? %>
+              <%= link_to "退勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% end %>
+          </td>         
+          <td>
+            <% if day.finished_at.present? && day.edit_day_finished_at.nil? %>
+              <%= working_times(day.started_at, day.finished_at) %>
+            <%# else %>
+            <% elsif day.edit_day_finished_at.present? && day.daily_request_status == "承認" %>
+              <%= edit_working_times(day.edit_day_started_at, day.edit_day_finished_at, day.next_day) %>            
+              <%# @total_working_times = @total_working_times.to_f + str_times.to_f %>
             <% end %>
           </td>
           <td><%= day.note %></td>
           <td><%= l(day.over_ending_time_at, format: :hour) if day.over_ending_time_at.present? %></td>
-          <td><%= format_min(day.over_ending_time_at) if day.over_ending_time_at.present? %></td>
+          <td><%= l(day.over_ending_time_at, format: :minute) if day.over_ending_time_at.present? %></td>
           <td>
             <% if day.over_ending_time_at.present? %>
               <%= working_overtimes(day.over_ending_time_at, @user.designated_work_end_time, day.next_day) %>
             <% end %>
           </td>
           <td><%= day.work_description %></td>
-          <td><% if day.apply_to_superior.present? %>
-                <%= User.find(day.apply_to_superior).name %>へ申請中
+          <td><% if day.overwork_request_superior.present? %>
+                <%= User.find(day.overwork_request_superior).name %><!-- へ申請中 -->
+                <%# = superiors(day.over_request_superior).name %>
+                <% if day.overwork_request_status == "申請中" %>
+                <%# if day.over_request_status == "申請中" %>
+                  へ 
+                <% else %>
+                  より結果 → 
+                <% end %>
+              <%= day.overwork_request_status %>
+              <!-- 残業 <%#= day.over_request_status %> -->
+            <% end %>
+            <br>
+            <% if day.overwork_info_superior.present? %>
+            <%# if day.edit_day_request_superior.present? %>
+              <%= User.find(day.overwork_info_superior).name %>
+              <%#= User.find(day.edit_day_request_superior).name %>
+                <% if day.overwork_info_status == "申請中" %>
+                <%# if day.edit_day_request_status == "申請中" %>
+                  へ 
+                <% else %>
+                  より結果 → 
+                <% end %>
+              勤怠変更 <%= day.overwork_info_status %>  
+              <!-- 勤怠変更 <%#= day.edit_day_request_status %> -->
               <% end %>
           </td>
         </tr>
@@ -115,7 +211,7 @@
           <br>
             
           <br>
-            <%= link_to "申請", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
+            <%#= link_to "申請", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
           <br>
         </td>
       </tr>
@@ -127,5 +223,10 @@
     </tfoot>
   </table>
 </div>
-<!--モーダルウインドウ表示-->
-<div id="edit-overwork-reqest" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+<!--モーダルウィンドウ表示-->
+<div id="edit_overwork_request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit_overwork_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit_daily_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit_monthly_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="log" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

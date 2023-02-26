@@ -101,10 +101,10 @@ class UsersController < ApplicationController
 
     def get_show_attendances
       @worked_sum = @attendances.where.not(started_at: nil).count
-      @overwork_request = Attendance.where(overwork_request_status: "申請中", apply_to_superior: @user.id)
-      @overwork_info = Attendance.where(overwork_info_status: "申請中", apply_to_superior: @user.id)
-      @edit_daily_request = Attendance.where(edit_daily_request_status: "申請中", apply_to_superior: @user.id)
-      @edit_monthly_request = Attendance.where(edit_monthly_request_status: "申請中", apply_to_superior: @user.id)
+      @overwork_request = Attendance.where(overwork_request_status: "申請中", overwork_request_superior: @user.id)
+      @overwork_info = Attendance.where(overwork_info_status: "申請中", overwork_info_superior: @user.id)
+      @daily_request = Attendance.where(daily_request_status: "申請中", daily_request_superior: @user.id)
+      @monthly_request = Attendance.where(monthly_request_status: "申請中", monthly_request_superior: @user.id)
       #@overwork_sum = Attendance.where(over_request_status: "申請中", over_request_superior: @user.id).count
       #@edit_day_sum = Attendance.where(edit_day_request_status: "申請中", edit_day_request_superior: @user.id).count
       @superiors = User.where(superior: true).where.not(id: @user.id)

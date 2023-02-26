@@ -2,7 +2,7 @@
 <% provide(:class_text, 'base--edit') %>
 <% provide(:button_text, '変更を申請する') %>
 
-<%= form_with(model: @attendance, url:user_attendance_update_overwork_reqest_path(@user, @attendance), local: true, method: :patch) do |f| %>
+<%= form_with(model: @attendance, url:user_attendance_update_overwork_request_path(@user, @attendance), local: true, method: :patch) do |f| %>
 <div class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
     <div class="modal-header">

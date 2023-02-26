@@ -1,6 +1,6 @@
 <% provide(:title, "【Edit:残業申請のお知らせ】") %>
 <% provide(:class_text, 'base--edit') %>
-<% provide(:button_text, '変更を送信する') %>
+<% provide(:button_text, '残業の変更を送信する') %>
 
 <div class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
@@ -43,7 +43,7 @@
                       <td><%= working_overtimes(day.over_ending_time_at, user.designated_work_end_time, day.next_day) %></td>
                       <td><%= day.work_description %></td>
                       <td><%= item.select :overwork_request_status, ['なし', '申請中', '承認', '否認'] %></td>
-                      <td><%= item.check_box :change, id: "test" %></td>
+                      <td><%= item.check_box :request_change, id: "test" %></td>
                       <td><%= link_to "確認",show_read_only_user_path(id), target: :_blank, class: "btn btn-primary" %></td>
                     </tr>
                   </tbody>

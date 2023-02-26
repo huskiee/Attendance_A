@@ -18,7 +18,7 @@
         <td><%= f.time_field :over_ending_time_at, class: "form-control" %></td>
         <td><%= f.check_box :next_day, id: "next_day" %></td>
         <td><%= f.text_field :work_description, class: "form-control" %></td>
-        <td><%= f.collection_select(:apply_to_superior, @superiors, :id, :name, { include_blank: "選択して下さい。" }, :required => true) %></td>
+        <td><%= f.collection_select(:overwork_request_superior, @superiors, :id, :name, { include_blank: "選択して下さい。" }, :required => true) %></td>
         <!-- <td>< %= f.select :apply_to_superior, [["選択してください", 0],["係長", 1],["課長", 2],["部長", 3]] %></td> -->
         <!-- <td>< %= f.select :apply_to_superior, [["選択してください", 0],["申請中", 1],["承認", 2],["否認", 3]] %></td> -->
       </tr>

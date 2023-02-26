@@ -27,21 +27,23 @@ Rails.application.routes.draw do
       patch 'attendances/update_one_month'
       get 'working'
       get 'show_read_only'
+      get 'attendances/log_attendant'
     end
     resources :attendances do
       get 'edit_overwork_request'
-      get 'edit_daily_info'
-      get 'edit_monthly_info'      
       patch 'update_overwork_request'
-      patch 'update_daily_info'
-      patch 'update_monthly_info'
+      get 'edit_monthly_request'
       
       collection do
         get 'edit_overwork_info'
         patch 'update_overwork_info'
-        patch 'edit_overwork_permission'
-        patch 'edit_daily_permission'
-        patch 'edit_monthly_permission'
+        get 'edit_daily_info'
+        patch 'update_daily_info'        
+        get 'edit_monthly_info'
+        patch 'update_monthly_info'        
+        #patch 'edit_overwork_permission'
+        #patch 'edit_daily_permission'
+        #patch 'edit_monthly_permission'
       end
     end
   end
