@@ -1,0 +1,55 @@
+<% provide(:title, @user.name) %>
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <%= search_form_for @search, url: attendances_log_attendant_user_path, local: true do |f| %>
+        <%= f.date_field :updated_at_gteq %>
+        <span>~</span>
+        <%= f.date_field :updated_at_lteq_end_of_day %>
+        <%= f.submit "検索", class: 'btn btn-primary' %>
+      <%end%>
+      <%= link_to "リセット", attendances_log_attendant_user_path, class: "btn btn-info" %>
+
+      <%#= form_with(model: [@user], url:attendances_log_attendant_user_path(@user), local: true, method: :patch) do |f| %>
+      <%#= form_with(model: @user, url: edit_overwork_permission_user_attendances_path, local: true, method: :patch) do |f| %>
+        <%# @attendances.each do |id, attendances| %>
+        <%# @request_users.each do |request_user| %>
+          <%# user = User.find(id) %>
+          <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}の勤怠編集履歴 】" %></h4>
+            <table class="table table-bordered table-condensed table-hover" id="table-attendances">
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>変更前出社時間</th>
+                  <th>変更前退社時間</th>
+                  <th>変更後出社時間</th>
+                  <th>変更後退社時間</th>
+                  <th>承認者</th>
+                  <th>承認日</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @attendances.each do |day| %>
+                  <tr>
+                    <td><%= l(day.worked_on, format: :short) %></td>
+                    <td><%= l(day.edit_day_started_at, format: :time) if day.edit_day_started_at.present? %></td>
+                    <td><%= l(day.edit_day_finished_at, format: :time) if day.edit_day_finished_at.present? %></td>
+                    <td><%= l(day.edit_lastday_started_at, format: :time) if day.edit_lastday_started_at.present? %></td>
+                    <td><%= l(day.edit_lastday_finished_at, format: :time) if day.edit_lastday_finished_at.present?%></td>
+                    <td><%= User.find(day.daily_request_superior).name %></td>
+                    <td><%= l(day.updated_at, format: :middle) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <%# end %>
+        <%# end %>
+      <%# end %>  
+    </div>
+  </div>
+</div>

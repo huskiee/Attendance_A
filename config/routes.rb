@@ -21,18 +21,19 @@ Rails.application.routes.draw do
   resources :users do
     collection { post :import }    
     member do
+      get 'attendant_employees', to: 'users#attendant_employees'
       get 'edit_basic_info'
       patch 'update_basic_info'
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month'
       get 'working'
       get 'show_read_only'
+      patch 'attendances/edit_monthly_request'
       get 'attendances/log_attendant'
     end
     resources :attendances do
       get 'edit_overwork_request'
       patch 'update_overwork_request'
-      get 'edit_monthly_request'
       
       collection do
         get 'edit_overwork_info'

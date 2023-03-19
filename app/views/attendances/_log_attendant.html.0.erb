@@ -1,0 +1,69 @@
+<% provide(:title, @user.name) %>
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <h1 class="modal-title">modal_【<%#= @user.name %>】の残業勤怠ログ</h1> -->
+      <div></div>
+      <%= form_with(url: attendances_log_attendant_user_path(@user), local:true, method: :get) do |f| %>
+        <div class="form-inline">
+          <% user = User.find(id) %>
+            <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}の残業勤怠ログ】" %></h4>
+              <!-- <table class="table table-bordered table-striped table-condensed table-hover" id="table-attendances"> -->
+              <%= link_to "リセット", attendances_log_attendant_user_path, class: "btn btn-info" %>
+              <tr>
+                <%= f.date_select :select_year,
+                  { end_year: Time.now.year, prompt: "年", discard_month: "true", discard_day: "true" },
+                  { id: "log-sch", class: "form-control form-sch" }
+                %>
+              </tr>
+              <br>
+              <tr>
+                <%= f.date_select :select_month,
+                   { use_month_numbers: true, prompt: "月", discard_year: "true", discard_day: "true" },
+                   { id: "log-sch", class: "form-control form-sch" }
+                %>
+              </tr>
+              <br>
+              <tr><%= f.submit "検索", class: "btn btn-primary" %></tr>
+          <% end %>
+        </div>
+      <% end %>
+                
+          <table class="table table-bordered table-sm table-hover" id="table-attendances">
+            <thead>
+              <tr>
+                <th>日付</th>
+                <th>変更前出社時間</th>
+                <th>変更前退社時間</th>
+                <th>変更後出社</th>
+                <th>変更後退社</th>
+                <th>指示者</th>
+                <th>承認日</th>
+              </tr>
+            </thead>
+                
+            <tbody>
+              <% if @first_day.present? %>
+                <% @attendances.each do |day| %>
+              <tr>		
+                <td><%= day.worked_on %></td>
+                <td><%= l(day.edit_day_started_at, format: :time) if day.edit_day_started_at.present? %></td>
+                <td><%= l(day.edit_day_finished_at, format: :time) if day.edit_day_finished_at.present? %></td>
+                <td><%= l(day.edit_lastday_started_at, format: :time) if day.edit_lastday_started_at.present? %></td>
+                <td><%= l(day.edit_lastday_finished_at, format: :time) if day.edit_lastday_finished_at.present? %></td>
+                <td><%= User.find(day.daily_request_superior).name %></td>
+                <td><%= l(day.updated_at, format: :middle) %></td>
+                <% end %>
+              <% end %>
+              </tr>
+            </tbody>
+          </table>
+          <% end %>
+    </div>
+  </div>
+</div>

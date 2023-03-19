@@ -1,10 +1,10 @@
 class AttendancesController < ApplicationController
   include AttendancesHelper
 
-  before_action :set_user, only: [:edit_one_month, :update_one_month]
-  before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overwork_request, :update_overwork_request]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_monthly_request, :log_attendant]
+  before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overwork_request, :update_overwork_request, :edit_monthly_request]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only: :edit_one_month
+  before_action :set_one_month, only:[:edit_one_month, :edit_monthly_request]
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -156,7 +156,60 @@ class AttendancesController < ApplicationController
   rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
     redirect_to @user
-  end  
+  end
+  
+  # １ヶ月分のまとめた申請
+  def edit_monthly_request
+    @offer = @user.attendances.find_by(worked_on: params[:date])
+    params[:monthly_request_status] = "申請中"
+    @offer.update_attributes(monthly_request_params)
+    flash[:success] = "1ヶ月分の勤怠情報を申請しました。"
+    redirect_to user_url(current_user)
+  end
+  
+  def update_monthly_request
+  end
+
+  # １ヶ月分のお知らせ承認
+  def edit_monthly_info
+    @user = User.find(params[:user_id])
+    @attendances = Attendance.where(monthly_request_status: "申請中", monthly_request_superior: @user.id).order(:worked_on).group_by(&:user_id)
+    @request_user = User.where(id: Attendance.where(confirmer: @user.name, monthly_request_status: "申請中").select(:user_id))
+  end
+  
+  # １ヶ月分のお知らせ承認
+  def update_monthly_info
+    @user = User.find(params[:user_id])
+    c1 = 0
+    ActiveRecord::Base.transaction do # トランザクションを開始します。
+      monthly_info_params.each do |id, item|
+        attendance = Attendance.find(id)
+        if item[:monthly_check] == "1"
+          c1 += 1
+          attendance.update_attributes!(item)
+        end
+      end
+    end
+    flash[:success] = "所属長承認の勤怠申請（１ヶ月分）を#{c1}件、結果を送信しました"
+    redirect_to @user
+  end
+
+  # 勤怠修正ログ画面をモーダルで表示
+  def log_attendant
+    @user = User.find(params[:id])
+    @search = @user.attendances.where(daily_request_status: "承認").order(:worked_on).ransack(params[:q])
+    @attendances = @search.result
+    #if params[:month].present?
+      #first_day = (params[:month] + "-1").to_date
+      #last_day = first_day.end_of_month
+      #this_month = [first_day..last_day]
+    #end
+    #@attendances = @user.attendances.where(worked_on: this_month).where(monthly_request_status: "承認")
+    #if params["select_year(1i)"].present? && params["select_month(2i)"].present?
+     #@first_day = (params["select_year(1i)"] + "-" + params["select_month(2i)"] + "-01").to_date
+      #@attendances = @user.attendances.where(worked_on: @first_day..@first_day.end_of_month, daily_request_status: "承認").order(:worked_on)
+    #end
+  end
 
   private
     # 1ヶ月分の勤怠情報を扱います。
@@ -179,7 +232,17 @@ class AttendancesController < ApplicationController
     def daily_request_params
       params.require(:user).permit(attendances: [:daily_request_status, :daily_change])[:attendances]
     end
-    
+
+    # 所属長承認の勤怠申請（１ヵ月分）
+    def monthly_request_params
+      params.permit(:monthly_request_superior, :monthly_request_status)
+    end
+
+    # 所属長の勤怠承認（１ヵ月分）
+    def monthly_info_params
+      params.require(:user).permit(attendances: [:monthly_request_status, :monthly_change])[:attendances]
+    end
+
     # beforeフィルター
 
     # 管理権限者、または現在ログインしているユーザーを許可します。
@@ -190,4 +253,5 @@ class AttendancesController < ApplicationController
         redirect_to(root_url)
       end
     end
+
 end

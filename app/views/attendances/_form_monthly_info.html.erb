@@ -1,13 +1,8 @@
-<%= form_with(model: [@attendance], url:user_attendance_update_overwork_request_path(@user, @attendance), local: true, method: :patch) do |f| %>
+<%= form_with(model: [@user], url:user_attendance_edit_monthly_request_path(@user), local: true, method: :patch) do |f| %>
   <table class="table table-bordered table-striped table-condensed table-hover" id="table-attendances">
     <thead>
       <tr>
-        <th>日付</th>
-        <th>曜日</th>
-        <th>終了予定時間</th>
-        <th>指定勤務終了時間</th>
-        <th>時間外時間</th>
-        <th>業務処理内容</th>
+        <th>月</th>
         <th>指示者確認印</th>
         <th>変更</th>
         <th>勤怠を確認する</th>
@@ -17,14 +12,9 @@
       <%= f.fields_for "attendances[]", day do |item| %>
         <tbody>
           <tr>
-            <td><%= l(day.worked_on, format: :short) %></td>
-            <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-            <td><%= l(day.over_ending_time_at, format: :time) %></td>
-            <td><%= format_basic_info(user.designated_work_end_time) %></td>
-            <td><%= working_overtime(day.over_ending_time_at, user.designated_work_end_time, day.next_day) %></td>
-            <td><%= day.work_description %></td>
-            <td><%= item.select :over_request_status, ['なし', '申請中', '承認', '否認'] %></td>
-            <td><%= item.check_box :change, id: "test" %></td>
+            <td><%= l(day.worked_on, format: :middle) %></td>
+            <td><%= item.select :monthly_request_status, ['なし', '申請中', '承認', '否認'] %></td>
+            <td><%= item.check_box :monthly_change, id: "test" %></td>
             <td><%= link_to "確認", show_confirmation_user_path(id), target: :_blank, class: "btn btn-primary" %></td>
           </tr>
         </tbody>

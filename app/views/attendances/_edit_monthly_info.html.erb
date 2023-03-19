@@ -13,7 +13,7 @@
       <%= form_with(model: @user, url:update_monthly_info_user_attendances_path(@user), local: true, method: :patch) do |f| %>
         <% @attendances.each do |id, attendances| %>
           <% user = User.find(id) %>
-          <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}からの１ヶ月分申請】" %></h4>
+          <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}からの１ヶ月分の勤怠申請】" %></h4>
             <table class="table table-bordered table-striped table-condensed table-hover" id="table-attendances">
               <thead>
                 <tr>

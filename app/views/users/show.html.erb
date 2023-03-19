@@ -68,13 +68,10 @@
   <br>
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
   <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-  <div class="left">
-  </br>
-  <%#= link_to "勤怠修正ログ（承認済）", attendances_log_user_path, remote: true, class: "btn btn-primary" %>
-  <%#= link_to "勤怠修正ログ（承認済）", attendances_sample_log_user_path, class: "btn btn-primary" %>
+   <br>
   <%= link_to "勤怠修正ログ（承認済）", attendances_log_attendant_user_path, class: "btn btn-primary" %>
-  </div>
 </div>
+
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
@@ -178,7 +175,7 @@
                 <%# if day.over_request_status == "申請中" %>
                   へ 
                 <% else %>
-                  より結果 → 
+                  の決裁 → 
                 <% end %>
               <%= day.overwork_request_status %>
               <!-- 残業 <%#= day.over_request_status %> -->
@@ -192,7 +189,7 @@
                 <%# if day.edit_day_request_status == "申請中" %>
                   へ 
                 <% else %>
-                  より結果 → 
+                  の決裁 → 
                 <% end %>
               勤怠変更 <%= day.overwork_info_status %>  
               <!-- 勤怠変更 <%#= day.edit_day_request_status %> -->
@@ -210,11 +207,22 @@
         <td colspan="2">累計勤務時間</td>
         <td colspan="5"></td>
         <td rowspan="2">所属長承認 未
+          <% if @offer.monthly_request_superior.present? %>
+            <%= User.find(@offer.monthly_request_superior).name %>
+              <%# if @offer.monthly_request_request_status == "申請中" %>
+                へ
+              <%# else %>
+                より結果 →
+              <%# end %>
+            <%= @offer.monthly_request_status %>
+          <% end %>
+          </br>
+           <%= form_with(model: @attendance, url: attendances_edit_monthly_request_user_path(date: @first_day), local: true, method: :patch) do |f| %>
+             <%= f.collection_select(:monthly_request_superior, @superiors, :id, :name, { include_blank: "選択して下さい。" }, :required => true) %>          
           <br>
-           <%#= form_with(model: @attendance, url: user_attendance_edit_monthly_request_path(date: @first_day), local: true, method: :patch) do |f| %>
-             <%#= f.collection_select(:monthly_request_superior, @superiors, :id, :name, { include_blank: "選択して下さい。" }, :required => true) %>          
-          <br>
+          </br>
             <%= submit_tag "１ヶ月分申請", class: "btn btn-primary" %>
+            <% end %>
         </td>
       </tr>
       <tr>
@@ -231,4 +239,4 @@
 <div id="edit_overwork_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit_daily_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit_monthly_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
-<div id="log_attendance" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<!-- <div id="log_attendant" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div> -->

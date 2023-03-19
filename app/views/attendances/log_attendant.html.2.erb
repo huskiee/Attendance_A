@@ -1,0 +1,53 @@
+<% provide(:title, @user.name) %>
+
+<h1>勤怠ログ</h1>
+<div>
+  <%= form_with(url: attendances_log_attendant_user_path(@user), local:true, method: :get) do |f| %>
+    <div class="form-inline">
+  <tr>
+    <%= f.date_select :select_year,
+      { end_year: Time.now.year, prompt: "年", discard_month: "true", discard_day: "true" },
+      { id: "log-sch", class: "form-control form-sch" }
+    %>
+  </tr>
+  <br>
+  <tr>
+    <%= f.date_select :select_month,
+      { use_month_numbers: true, prompt: "月", discard_year: "true", discard_day: "true" },
+      { id: "log-sch", class: "form-control form-sch" }
+    %>
+  </tr>
+  <br>
+  <tr><%= f.submit "検索", class: "btn btn-primary" %></tr>
+    </div>
+  <% end %>
+
+<table class="table table-bordered table-sm table-hover" id="table-attendances">
+  <thead>
+     <tr>
+      <th>日付</th>
+      <th>変更前出社時間</th>
+      <th>変更前退社時間</th>
+      <th>変更後出社</th>
+      <th>変更後退社</th>
+      <th>指示者</th>
+      <th>承認日</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @first_day.present? %>
+    <% @attendances.each do |day| %>
+		<tr>		
+			<td><%= day.worked_on %></td>
+			<td><%= l(day.edit_day_started_at, format: :time) if day.edit_day_started_at.present? %></td>
+			<td><%= l(day.edit_day_finished_at, format: :time) if day.edit_day_finished_at.present? %></td>
+			<td><%= l(day.edit_lastday_started_at, format: :time) if day.edit_lastday_started_at.present? %></td>
+			<td><%= l(day.edit_lastday_finished_at, format: :time) if day.edit_lastday_finished_at.present? %></td>
+			<td><%= User.find(day.daily_request_superior).name %></td>
+			<td><%= l(day.updated_at, format: :long_without_HM) %></td>
+		<% end %>
+    <% end %>
+		</tr>
+  </tbody>
+</table>
