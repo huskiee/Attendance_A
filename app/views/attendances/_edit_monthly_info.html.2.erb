@@ -10,10 +10,12 @@
       </button>
     </div>
     <div class="modal-body">
-      <%= form_with(model: [@user], url:update_daily_info_user_attendances_path(@user), local: true, method: :patch) do |f| %>
+      <%= form_with(model: [@user], url:update_monthly_info_user_attendances_path(@user), local: true, method: :patch) do |f| %>
+      <%#= form_with(model: @user, url: edit_overwork_permission_user_attendances_path, local: true, method: :patch) do |f| %>
         <% @attendances.each do |id, attendances| %>
+        <%# @request_users.each do |request_user| %>
           <% user = User.find(id) %>
-          <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}からの勤怠編集変更申請】" %></h4>
+          <h4 class="modal-title center" style="text-align:center"><%= "【#{user.name}からの勤怠編集変更申請1】" %></h4>
             <table class="table table-bordered table-striped table-condensed table-hover" id="table-attendances">
               <thead>
                 <tr><!--rowspan:縦結合、colspan：横結合-->
@@ -44,15 +46,17 @@
                 </tr>              
               </thead>
               <% attendances.each do |day| %>
+              <%# @attendance_lists[request_user.id].each do |day| %>
                 <%= f.fields_for "attendances[]", day do |item| %>
+                <%#= f.fields_for @attendances_lists[request_user.id] do |item| %>
                   <tbody>
                     <tr>
                       <td><%= l(day.worked_on, format: :short) %></td>
                       <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-                      <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
-                      <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
-                      <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
-                      <td><%= l(day.finished_at, format: :minute) if day.finished_at.present? %></td>                      
+                      <td><%= l(day.started_at, format: :hour) %></td>
+                      <td><%= l(day.started_at, format: :minute) %></td>
+                      <td><%= l(day.finished_at, format: :hour) %></td>
+                      <td><%= l(day.finished_at, format: :minute) %></td>                      
                       <td><%= l(day.edit_day_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
                       <td><%= l(day.edit_day_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
                       <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
@@ -66,7 +70,7 @@
                 <% end %>
               <% end %>
             </table>
-        <% end %>
+          <% end %>
         <div class= center>
           <%= f.submit yield(:button_text), class: "btn btn-primary btn-#{yield(:class_text)}" %>
         </div>

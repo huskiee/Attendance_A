@@ -132,9 +132,9 @@
               <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
             <% end %>
           <td>
-            <% if (Date.current == day.worked_on) && day.started_at.nil? %>
-              <%= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
-            <% end %>
+            <%# if (Date.current == day.worked_on) && day.started_at.nil? %>
+              <%#= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <%# end %>
           </td>
             <% if day.edit_lastday_finished_at.nil? && day.daily_request_status == "承認" %>
               <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
@@ -147,9 +147,9 @@
               <td><%= l(day.finished_at, format: :minute) if day.finished_at.present? %></td>
             <% end %>
           <td>
-            <% if (Date.current == day.worked_on) && day.finished_at.nil? %>
-              <%= link_to "退勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
-            <% end %>
+            <%# if (Date.current == day.worked_on) && day.finished_at.nil? %>
+              <%#= link_to "退勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <%# end %>
           </td>         
           <td>
             <% if day.finished_at.present? && day.edit_day_finished_at.nil? %>
@@ -223,6 +223,9 @@
     </tfoot>
   </table>
 </div>
+<!-- <div class="center"> -->
+  <%#= link_to "キャンセル", user_path(@current_user date: @first_day), class: "btn btn-lg btn-default" %>
+<!-- </div> -->
 
 <!--モーダルウィンドウ表示-->
 <div id="edit_overwork_request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

@@ -30,21 +30,21 @@
                 <% end %>
               </td>
                 <% if !current_user.admin? && (Date.current < day.worked_on) %>
-                  <td><%= attendance.time_field :edit_day_started_at, readonly: false, class: "form-control" %></td>
-                  <td><%= attendance.time_field :edit_day_finished_at, readonly: false, class: "form-control" %></td>
+                  <td><%= attendance.time_field :started_at, readonly: false, class: "form-control" %></td>
+                  <td><%= attendance.time_field :finished_at, readonly: false, class: "form-control" %></td>
                 <% else %>
                   <td>
                     <% if day.edit_day_started_at.present? %>
-                      <%= attendance.time_field :edit_lastday_started_at, class: "form-control" %>
-                    <% else %>
                       <%= attendance.time_field :edit_day_started_at, class: "form-control" %>
+                    <% else %>
+                      <%= attendance.time_field :started_at, class: "form-control" %>
                     <% end %>
                   </td>
                   <td>
                     <% if day.edit_day_finished_at.present? %>
-                      <%= attendance.time_field :edit_lastday_finished_at, class: "form-control" %>
-                    <% else %>
                       <%= attendance.time_field :edit_day_finished_at, class: "form-control" %>
+                    <% else %>
+                      <%= attendance.time_field :finished_at, class: "form-control" %>
                     <% end %>
                   </td>
                 <% end %>
@@ -56,7 +56,11 @@
               </td>
               <td><%= attendance.text_field :note, class: "form-control" %></td>
               <td>
-                <%= attendance.collection_select(:daily_request_superior, @superiors, :id, :name, { include_blank: "選択して下さい。", selected: nil }) %>
+                <%# if attendance.overwork_request_superior.present? %>
+                  <%= attendance.collection_select(:daily_request_superior, @superiors, :id, :name, { include_blank: "選択して下さい。", selected: nil }) %>
+                <%# else %>
+                  <%#= attendance.text_field :overwork_request_superior, class: "form-control" %>
+                <%# end %>
               </td>
             </tr>
           <% end %>

@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_monthly_request, :log_attendant]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overwork_request, :update_overwork_request, :edit_monthly_request]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only:[:edit_one_month, :edit_monthly_request]
+  before_action :set_one_month, only:[:edit_one_month, :update_one_month,:edit_monthly_request]
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -241,6 +241,33 @@ class AttendancesController < ApplicationController
     # 所属長の勤怠承認（１ヵ月分）
     def monthly_info_params
       params.require(:user).permit(attendances: [:monthly_request_status, :monthly_change])[:attendances]
+    end
+    
+    def send_attendance_csv(attendances)
+      csv_data = CSV.generate do |csv|
+        header = %w(日付 出社 退社)
+        csv << header
+        attendances.each do |attendance|
+          values = [
+            l(attendance.worked_on, format: :short),
+            if attendance.edit_lastday_started_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_lastday_started_at, format: :time)
+            elsif attendance.edit_day_started_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_day_started_at, format: :time)
+            elsif attendance.started_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.started_at, format: :time) end,
+            
+            if attendance.edit_lastday_finished_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_lastday_finished_at, format: :time)
+            elsif attendance.edit_day_finished_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_day_finished_at, format: :time)
+            elsif attendance.finished_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.finished_at, format: :time) end,
+            ]
+            csv << values
+          end
+        end
+        send_data(csv_data, filename: "勤怠一覧表.csv")
     end
 
     # beforeフィルター

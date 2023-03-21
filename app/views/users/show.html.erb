@@ -44,7 +44,7 @@
     <br>
     <% if @daily_request.present? %>
       <div class="rowspan">
-        <font color="red"><%= link_to "【勤怠変更のお知らせ】", edit_daily_info_user_attendances_path(@user), remote: true, class: "text text-danger" %>
+        <font color="red"><%= link_to "【勤怠変更のお知らせ】", edit_daily_info_user_attendances_path(@user, @attendances), remote: true, class: "text text-danger" %>
           <strong style="display:inline-block; padding:1px; border:thick solid red;"><%= "#{@daily_request.count}件の通知があります。" %>
           </strong>
         </font>
@@ -67,7 +67,7 @@
   <% end %>
   <br>
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-  <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day, format: :csv), class: "btn btn-primary" %>
    <br>
   <%= link_to "勤怠修正ログ（承認済）", attendances_log_attendant_user_path, class: "btn btn-primary" %>
 </div>
