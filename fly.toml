@@ -1,0 +1,8 @@
+# fly.toml file generated for attendance-app-a on 2023-03-25T14:54:13Z
+
+app = "attendance-app-a"
+primary_region = "nrt"
+
+[[statics]]
+  guest_path = "/rails/public"
+  url_prefix = "/"
