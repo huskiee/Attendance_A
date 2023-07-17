@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # fly.toml file generated for attendance-app-a on 2023-03-25T16:03:12Z
 
 app = "attendance-app-a"
@@ -41,3 +42,13 @@ processes = []
 [[statics]]
   guest_path = "/app/public"
   url_prefix = "/static/"
+=======
+# fly.toml file generated for attendance-app-a on 2023-03-25T14:54:13Z
+
+app = "attendance-app-a"
+primary_region = "nrt"
+
+[[statics]]
+  guest_path = "/rails/public"
+  url_prefix = "/"
+>>>>>>> f0ef674d73f4bad886445a96d6e3bc1fd397335f
