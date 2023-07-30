@@ -1,0 +1,25 @@
+@charset "UTF-8";
+a {
+  text-decoration: none; }
+
+#modal-content {
+  width: 50%;
+  margin: 1.5em auto 0;
+  padding: 10px 20px;
+  border: 2px solid #aaa;
+  background: #fff;
+  z-index: 2; }
+
+.modal-p {
+  margin-top: 1em; }
+
+.modal-p:first-child {
+  margin-top: 0; }
+
+/* 基本情報編集モーダルウインドウ */
+.label-edit {
+  margin-top: 5px; }
+
+.btn-edit {
+  margin: 15px 0;
+  width: 30%; }
