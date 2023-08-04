@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "3.1.4"
+ruby '3.1.4'
 gem 'rails',        '~> 5.1.7'
 gem 'rails-i18n'
 gem 'bcrypt'
