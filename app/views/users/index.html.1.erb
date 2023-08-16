@@ -1,0 +1,55 @@
+<% provide(:title, 'All User:ユーザー一覧') %>
+<% provide(:class_text, 'user--edit') %>
+<% provide(:button_text, '編集するー') %>
+<h1>ユーザー一覧</h1>
+
+<div class="col-md-10 col-md-offset-1">
+  <%= form_tag import_users_path, method: :post, multipart: true do %>
+    <%= file_field_tag :file %>
+    <h4 class="container-lg col-md-10">
+    <%= submit_tag "　　　　ＣＳＶをインポート　　　　", class: "btn btn-primary" %>
+    </h4>
+  <% end %>  
+  <div class="text-right">
+  <%= will_paginate %>
+  </div>
+  <table class="table table-condensed table-hover" id="table-users">
+    <thead>
+      <tr>
+        <th><%= User.human_attribute_name :name %></th>
+      </tr>
+    </thead>
+
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <% unless user.admin? %>
+            <%= link_to user.name, user %>
+          <% end %>
+        <br>
+          <% if current_user.admin? && !current_user?(user) %>
+            <%= link_to "削除", user, method: :delete,
+                data: { confirm: "削除してよろしいですか？" },
+                class: "btn btn-primary" %>
+
+        <div class="panel-group">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <button type="button" data-toggle="collapse" data-target="#collapse<%= user.id %>" class="btn btn-primary btn-lg" aria-expanded="true">編集</button>
+              </h4>
+            </div>
+            <div id="collapse<%= user.id %>" class="panel-collapse collapse">
+              <div class="panel-body">
+                <%= render 'edit_basic_info1', {user: user} %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="text-right"><%= will_paginate %></div>
+</div>

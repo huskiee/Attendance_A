@@ -44,8 +44,7 @@
     <br>
     <% if @daily_request.present? %>
       <div class="rowspan">
-        <font color="red"><%= link_to "【勤怠変更のお知らせ】", edit_daily_info_user_attendances_path(@user, @attendances
-        ), remote: true, class: "text text-danger" %>
+        <font color="red"><%= link_to "【勤怠変更のお知らせ】", edit_daily_info_user_attendances_path(@user, @attendances), remote: true, class: "text text-danger" %>
           <strong style="display:inline-block; padding:1px; border:thick solid red;"><%= "#{@daily_request.count}件の通知があります。" %>
           </strong>
         </font>
