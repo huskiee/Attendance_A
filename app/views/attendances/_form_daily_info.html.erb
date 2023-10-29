@@ -41,14 +41,14 @@
               <tr>
                 <td><%= l(day.worked_on, format: :short) %></td>
                 <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-                <td><%= l(day.edit_day_started_at, format: :hour) %></td>
-                <td><%= l(day.edit_day_started_at, format: :minute) %></td>
-                <td><%= l(day.edit_day_finished_at, format: :hour) %></td>
-                <td><%= l(day.edit_day_finished_at, format: :minute) %></td>                      
-                <td><%= l(day.last_edit_day_started_at, format: :hour) if day.last_edit_day_started_at.present? %></td>
-                <td><%= l(day.last_edit_day_started_at, format: :minute) if day.last_edit_day_started_at.present? %></td>
-                <td><%= l(day.last_edit_day_finished_at, format: :hour) if day.last_edit_day_finished_at.present? %></td>
-                <td><%= l(day.last_edit_day_finished_at, format: :minute) if day.last_edit_day_finished_at.present? %></td>
+                <td><%= l(day.edit_started_at, format: :hour) %></td>
+                <td><%= l(day.edit_started_at, format: :minute) %></td>
+                <td><%= l(day.edit_finished_at, format: :hour) %></td>
+                <td><%= l(day.edit_finished_at, format: :minute) %></td>                      
+                <td><%= l(day.log_started_at, format: :hour) if day.log_started_at.present? %></td>
+                <td><%= l(day.log_started_at, format: :minute) if day.log_started_at.present? %></td>
+                <td><%= l(day.log_finished_at, format: :hour) if day.log_finished_at.present? %></td>
+                <td><%= l(day.log_finished_at, format: :minute) if day.log_finished_at.present? %></td>
                 <td><%= day.work_description %></td>
                 <td><%= item.select :daily_request_status, ['なし', '申請中', '承認', '否認'] %></td>
                 <td><%= item.check_box :daily_change, id: "test" %></td>

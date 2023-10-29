@@ -13,7 +13,7 @@
           <th width="30%">年</th>
           <td>
             <%= f.date_select :select_year,
-              { end_year: Time.now.year, prompt: "－", discard_month: "true", discard_day: "true" },
+              { end_year: Time.now.year, prompt: "－", discard_month: "true", discard: "true" },
               { id: "log-sch", class: "form-control form-sch" }
             %>
           </td>
@@ -22,7 +22,7 @@
           <th width="30%">月</th>
           <td>
             <%= f.date_select :select_month,
-              { use_month_numbers: true, prompt: "－", discard_year: "true", discard_day: "true" },
+              { use_month_numbers: true, prompt: "－", discard_year: "true", discard: "true" },
               { id: "log-sch", class: "form-control form-sch" }
             %>
           </td>
@@ -48,17 +48,17 @@
     <% @attendances.each do |day| %>
   		<tr>		
   			<td><%= day.worked_on %></td>
-  			<td><%= l(day.edit_day_started_at, format: :time) if day.edit_day_started_at.present? %></td>
-  			<td><%= l(day.edit_day_finished_at, format: :time) if day.edit_day_finished_at.present? %></td>
-  			<td><%= l(day.edit_lastday_started_at, format: :time) if day.edit_lastday_started_at.present? %></td>
-  			<td><%= l(day.edit_lastday_finished_at, format: :time) if day.edit_lastday_finished_at.present? %></td>
+  			<td><%= l(day.edit_started_at, format: :time) if day.edit_started_at.present? %></td>
+  			<td><%= l(day.edit_finished_at, format: :time) if day.edit_finished_at.present? %></td>
+  			<td><%= l(day.log_started_at, format: :time) if day.log_started_at.present? %></td>
+  			<td><%= l(day.log_finished_at, format: :time) if day.log_finished_at.present? %></td>
   			<td><%= User.find(day.daily_request_superior).name %></td>
   			<td><%= l(day.updated_at, format: :middle) %></td>
   		<%# end %>
+  		 </tr>
     <% end %>
-		</tr>
   </tbody>
 </table>
 <div class="center">
-  <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-lg btn-default" %>
+  <%= link_to "キャンセル", user_path(date: @first), class: "btn btn-lg btn-default" %>
 </div>

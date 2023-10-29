@@ -121,12 +121,12 @@
               <%= $days_of_the_week[day.worked_on.wday] %>
             <% end %>
           </td>
-            <% if day.edit_lastday_started_at.nil? && day.daily_request_status == "承認" %>
-              <td><%= l(day.edit_day_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
-              <td><%= l(day.edit_day_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
-            <% elsif day.edit_day_started_at.nil? && day.daily_request_status == "承認" %>  
-              <td><%= l(day.edit_day_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
-              <td><%= l(day.edit_day_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
+            <% if day.log_started_at.nil? && day.daily_request_status == "承認" %>
+              <td><%= l(day.edit_started_at, format: :hour) if day.edit_day_started_at.present? %></td>
+              <td><%= l(day.edit_started_at, format: :minute) if day.edit_day_started_at.present? %></td>
+            <% elsif day.edit_started_at.nil? && day.daily_request_status == "承認" %>  
+              <td><%= l(day.edit_started_at, format: :hour) if day.edit_started_at.present? %></td>
+              <td><%= l(day.edit_started_at, format: :minute) if day.edit_started_at.present? %></td>
             <% else %>
               <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
               <td><%= l(day.started_at, format: :minute) if day.started_at.present? %></td>
@@ -136,12 +136,12 @@
               <%#= link_to "出勤", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <%# end %>
           </td>
-            <% if day.edit_lastday_finished_at.nil? && day.daily_request_status == "承認" %>
-              <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
-              <td><%= l(day.edit_day_finished_at, format: :minute) if day.edit_day_finished_at.present? %></td>
-            <% elsif day.edit_day_finished_at.nil? && day.daily_request_status == "承認" %>  
-              <td><%= l(day.edit_day_finished_at, format: :hour) if day.edit_day_finished_at.present? %></td>
-              <td><%= l(day.edit_day_finished_at, format: :minute) if day.edit_day_finished_at.present? %></td>
+            <% if day.log_finished_at.nil? && day.daily_request_status == "承認" %>
+              <td><%= l(day.edit_finished_at, format: :hour) if day.edit_finished_at.present? %></td>
+              <td><%= l(day.edit_finished_at, format: :minute) if day.edit_finished_at.present? %></td>
+            <% elsif day.edit_finished_at.nil? && day.daily_request_status == "承認" %>  
+              <td><%= l(day.edit_finished_at, format: :hour) if day.edit_finished_at.present? %></td>
+              <td><%= l(day.edit_finished_at, format: :minute) if day.edit_finished_at.present? %></td>
             <% else %>
               <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
               <td><%= l(day.finished_at, format: :minute) if day.finished_at.present? %></td>
@@ -152,11 +152,11 @@
             <%# end %>
           </td>         
           <td>
-            <% if day.finished_at.present? && day.edit_day_finished_at.nil? %>
+            <% if day.finished_at.present? && day.edit_finished_at.nil? %>
               <%= working_times(day.started_at, day.finished_at) %>
             <%# else %>
-            <% elsif day.edit_day_finished_at.present? && day.daily_request_status == "承認" %>
-              <%= edit_working_times(day.edit_day_started_at, day.edit_day_finished_at, day.next_day) %>            
+            <% elsif day.edit_finished_at.present? && day.daily_request_status == "承認" %>
+              <%= edit_working_times(day.edit_started_at, day.edit_finished_at, day.next_day) %>            
               <%# @total_working_times = @total_working_times.to_f + str_times.to_f %>
             <% end %>
           </td>

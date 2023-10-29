@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230214190446) do
+ActiveRecord::Schema.define(version: 20231023104829) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -33,10 +33,10 @@ ActiveRecord::Schema.define(version: 20230214190446) do
     t.string "overwork_info_superior"
     t.string "daily_request_superior"
     t.string "monthly_request_superior"
-    t.datetime "edit_day_started_at"
-    t.datetime "edit_day_finished_at"
-    t.datetime "edit_lastday_started_at"
-    t.datetime "edit_lastday_finished_at"
+    t.datetime "edit_started_at"
+    t.datetime "edit_finished_at"
+    t.datetime "log_started_at"
+    t.datetime "log_finished_at"
     t.boolean "request_change"
     t.boolean "daily_change"
     t.boolean "monthly_change"

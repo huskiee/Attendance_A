@@ -22,12 +22,12 @@ module AttendancesHelper
   end
   
   # 編集勤務開始時間と編集勤務終了時間を受け取り、勤怠編集用の在社時間を計算して返します。
-  def edit_working_times(edit_day_started_at, edit_day_finished_at, next_day)
+  def edit_working_times(edit_started_at, edit_finished_at, next_day)
     #if next_day
       #format("%.2f", (((edit_day_finished_at - edit_day_started_at) / 60) / 60.0) +24)
       #format("%.2f", (edit_day_finished_at.hour - edit_day_started_at.hour) + ((edit_day_finished_at.min - edit_day_started_at.min) / 60.0) + 24)
     #else
-      format("%.2f", (((edit_day_finished_at - edit_day_started_at) / 60) / 60.0))
+      format("%.2f", (((edit_finished_at - edit_started_at) / 60) / 60.0))
       #format("%.2f", (edit_day_finished_at.hour - edit_day_started_at.hour) + ((edit_day_finished_at.min - edit_day_started_at.min) / 60.0))
     #end
   end

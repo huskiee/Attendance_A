@@ -39,7 +39,19 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month
-   
+    #ActiveRecord::Base.transaction do # トランザクションを開始します。
+      #if attendances_invalid?
+        #attendances_params.each do |id, item|
+          #attendance = Attendance.find(id)
+          #attendance.update_attributes!(item)
+        #end
+        #flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
+        #redirect_to user_url(date: params[:date])
+      #else
+        #flash[:danger] = "出勤又は退勤の一方のみの入力データがあった為、更新をキャンセルしました。"
+        #redirect_to attendances_edit_one_month_user_path(date: params[:date])
+      #end
+    #end
     c1 = 0
     ActiveRecord::Base.transaction do # トランザクションを開始します。
       attendances_params.each do |id, item|
@@ -52,6 +64,7 @@ class AttendancesController < ApplicationController
           item[:monthly_request_status] = "申請中"  
           c1 += 1
           attendance.update_attributes!(item)
+          debugger
         end
       end
     end
@@ -189,8 +202,8 @@ class AttendancesController < ApplicationController
   # 勤怠修正ログ画面をモーダルで表示
   def log_attendant
     @user = User.find(params[:id])
-    #@search = @user.attendances.where(daily_request_status: "承認").order(:worked_on).ransack(params[:q])
-    #@attendances = @search.result
+    @search = @user.attendances.where(daily_request_status: "承認").order(:worked_on).ransack(params[:q])
+    @attendances = @search.result
     #if params[:month].present?
       #first_day = (params[:month] + "-1").to_date
       #last_day = first_day.end_of_month
@@ -207,8 +220,8 @@ class AttendancesController < ApplicationController
     # 1ヶ月分の勤怠情報を扱います。
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :over_ending_time_at, :next_day, :overtime, :work_description, 
-                                                 :daily_request_status, :daily_request_superior,
-                                                 :edit_started_at, :edit_finished_at, :log_started_at, :log_finished_at])[:attendances]
+                                                 :overwork_request_superior, :overwork_request_status, :daily_request_status, :daily_request_superior, :monthly_request_status,:monthly_request_superior,
+                                                 :edit_day_started_at, :edit_day_finished_at, :edit_lastday_started_at, :edit_lastday_finished_at])[:attendances]
     end
     
     def overwork_params
@@ -242,17 +255,17 @@ class AttendancesController < ApplicationController
         attendances.each do |attendance|
           values = [
             l(attendance.worked_on, format: :short),
-            if attendance.log_started_at.present? && attendance.daily_request_status == "承認"
-            l(attendance.log_started_at, format: :time)
-            elsif attendance.edit_started_at.present? && attendance.daily_request_status == "承認"
-            l(attendance.edit_started_at, format: :time)
+            if attendance.edit_lastday_started_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_lastday_started_at, format: :time)
+            elsif attendance.edit_day_started_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_day_started_at, format: :time)
             elsif attendance.started_at.present? && attendance.daily_request_status == "承認"
             l(attendance.started_at, format: :time) end,
             
-            if attendance.log_finished_at.present? && attendance.daily_request_status == "承認"
-            l(attendance.log_finished_at, format: :time)
-            elsif attendance.edit_finished_at.present? && attendance.daily_request_status == "承認"
-            l(attendance.edit_finished_at, format: :time)
+            if attendance.edit_lastday_finished_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_lastday_finished_at, format: :time)
+            elsif attendance.edit_day_finished_at.present? && attendance.daily_request_status == "承認"
+            l(attendance.edit_day_finished_at, format: :time)
             elsif attendance.finished_at.present? && attendance.daily_request_status == "承認"
             l(attendance.finished_at, format: :time) end,
             ]
